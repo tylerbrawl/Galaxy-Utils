@@ -12,7 +12,7 @@
 #
 import os
 import sys
-sys.path.append(os.path.abspath('src'))
+sys.path.insert(0, os.path.abspath('..'))
 
 
 # -- Project information -----------------------------------------------------
@@ -31,7 +31,13 @@ release = '11/26/2019'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx_autodoc_typehints'
 ]
+
+autodoc_member_order = 'bysource'
+autodoc_inherit_docstrings = False
+autodoc_mock_imports = ['galaxy']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
