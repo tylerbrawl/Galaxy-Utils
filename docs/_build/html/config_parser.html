@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>config_parser &mdash; galaxyutils v0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="time_tracker" href="time_tracker.html" />
+    <link rel="prev" title="galaxyutils / Universal Galaxy 2.0 Integration Utilities" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> galaxyutils
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">config_parser</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-galaxyutils.config_parser">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="time_tracker.html">time_tracker</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">galaxyutils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>config_parser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/config_parser.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="config-parser">
+<h1>config_parser<a class="headerlink" href="#config-parser" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This particular file allows for the use of a configuration file for a plugin (known as <code class="docutils literal notranslate"><span class="pre">config.cfg</span></code>), which is
+created from a default configuration file (known as <code class="docutils literal notranslate"><span class="pre">default_config.cfg</span></code>).</p>
+<p>These configuration files have the following format:</p>
+<ul class="simple">
+<li><p>Lines beginning with <code class="docutils literal notranslate"><span class="pre">#</span></code> are comments, and are not interpreted by the underlying parser. These can be used to inform
+users about an option’s default value, allowed values, and purpose.</p></li>
+<li><p>Lines beginning with <code class="docutils literal notranslate"><span class="pre">##</span></code> are default-only comments, meaning that they will not be copied from <code class="docutils literal notranslate"><span class="pre">default_config.cfg</span></code>
+into <code class="docutils literal notranslate"><span class="pre">config.cfg</span></code> when creating a duplicated configuration file. These can be used to discourage users from editing
+the <code class="docutils literal notranslate"><span class="pre">default_config.cfg</span></code> file, among other reasons.</p></li>
+<li><p>Lines not preceded by a <code class="docutils literal notranslate"><span class="pre">#</span></code> or a <code class="docutils literal notranslate"><span class="pre">##</span></code> are interpreted to have both an option’s name and its value, separated by an
+assignment operator (<code class="docutils literal notranslate"><span class="pre">=</span></code>).</p></li>
+</ul>
+<p>Here is an example of a valid <code class="docutils literal notranslate"><span class="pre">default_config.cfg</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">## DO NOT EDIT OR DELETE THIS FILE! If you need to make changes, then copy this file, save it as &quot;config.cfg&quot; in the</span>
+<span class="c1">## plugin root directory, and edit that file instead!</span>
+
+<span class="n">log_sensitive_data</span><span class="o">=</span><span class="kc">False</span>
+<span class="c1"># Default Value: False</span>
+<span class="c1"># Allowed Values:</span>
+<span class="c1">#   - True</span>
+<span class="c1">#   - False</span>
+<span class="c1"># If set to true, this setting will add sensitive information to the log file generated by this plugin. Since this</span>
+<span class="c1"># information can compromise the security of your account, this setting is best left to false, unless you are</span>
+<span class="c1"># debugging the plugin.</span>
+</pre></div>
+</div>
+<p>Within a plugin (preferably in a file designated to constants, like <code class="docutils literal notranslate"><span class="pre">consts.py</span></code>), the defined setting can then be
+accessed like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG_OPTIONS</span> <span class="o">=</span> <span class="n">get_config_options</span><span class="p">([</span>
+    <span class="n">Option</span><span class="p">(</span><span class="n">option_name</span><span class="o">=</span><span class="s2">&quot;log_sensitive_data&quot;</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">LOG_SENSITIVE_DATA</span> <span class="o">=</span> <span class="n">CONFIG_OPTIONS</span><span class="p">[</span><span class="s2">&quot;log_sensitive_data&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>For more details regarding accessing the user’s defined configuration settings, see the documentation below.</p>
+</div>
+<div class="section" id="module-galaxyutils.config_parser">
+<span id="documentation"></span><h2>Documentation<a class="headerlink" href="#module-galaxyutils.config_parser" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="galaxyutils.config_parser.Option">
+<em class="property">class </em><code class="sig-prename descclassname">galaxyutils.config_parser.</code><code class="sig-name descname">Option</code><span class="sig-paren">(</span><em class="sig-param">option_name</em>, <em class="sig-param">allowed_values=&lt;factory&gt;</em>, <em class="sig-param">default_value=False</em><span class="sig-paren">)</span><a class="headerlink" href="#galaxyutils.config_parser.Option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new <code class="docutils literal notranslate"><span class="pre">Option</span></code> object to define a customizable option. The <code class="docutils literal notranslate"><span class="pre">option_name</span></code> value must be the same value as
+is provided within the plugin’s <code class="docutils literal notranslate"><span class="pre">default_config.cfg</span></code> file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>option_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The name of the option which will be configured. This name must match the name provided within
+the plugin’s <code class="docutils literal notranslate"><span class="pre">default_config.cfg</span></code> file.</p></li>
+<li><p><strong>allowed_values</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]]) – This defines the list of possible values that the option can take. If this parameter is not
+defined, then the default list of <code class="docutils literal notranslate"><span class="pre">[True,</span> <span class="pre">False]</span></code> is used.</p></li>
+<li><p><strong>default_value</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]) – This defines the default value of the option. This value is used if the specified option
+cannot be found in the generated <code class="docutils literal notranslate"><span class="pre">config.cfg</span></code> file, or if the value assigned to the option within this file is
+not in the <code class="docutils literal notranslate"><span class="pre">allowed_values</span></code> list. If this parameter is not defined, then the default value of <code class="docutils literal notranslate"><span class="pre">False</span></code> is
+used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#galaxyutils.config_parser.InvalidConfigOptionException" title="galaxyutils.config_parser.InvalidConfigOptionException"><strong>InvalidConfigOptionException</strong></a> – This exception is thrown if the <code class="docutils literal notranslate"><span class="pre">Option</span></code> object is created with a
+<code class="docutils literal notranslate"><span class="pre">default_value</span></code> value that is not in the <code class="docutils literal notranslate"><span class="pre">allowed_values</span></code> list.</p>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="galaxyutils.config_parser.Option.default_value">
+<code class="sig-name descname">default_value</code><em class="property"> = False</em><a class="headerlink" href="#galaxyutils.config_parser.Option.default_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="galaxyutils.config_parser.get_config_options">
+<code class="sig-prename descclassname">galaxyutils.config_parser.</code><code class="sig-name descname">get_config_options</code><span class="sig-paren">(</span><em class="sig-param">options</em><span class="sig-paren">)</span><a class="headerlink" href="#galaxyutils.config_parser.get_config_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Using a specified list of <code class="docutils literal notranslate"><span class="pre">Option</span></code> objects (<code class="docutils literal notranslate"><span class="pre">options</span></code>), this method returns a dictionary consisting of the
+various options names as keys and their respective value as values. The returned option values are either the values
+specified according to the <code class="docutils literal notranslate"><span class="pre">config.cfg</span></code> file or, if the value in the <code class="docutils literal notranslate"><span class="pre">config.cfg</span></code> file is not in the option’s
+list of allowed values, the default values. If a <code class="docutils literal notranslate"><span class="pre">config.cfg</span></code> file is not present in the root of the plugin
+directory, then it is created as a copy of <code class="docutils literal notranslate"><span class="pre">default_config.cfg</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#galaxyutils.config_parser.Option" title="galaxyutils.config_parser.Option"><code class="xref py py-class docutils literal notranslate"><span class="pre">Option</span></code></a>]) – The list of <code class="docutils literal notranslate"><span class="pre">Option</span></code> objects which will have their value returned.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – This exception is raised if the <code class="docutils literal notranslate"><span class="pre">default_config.cfg</span></code> file is not contained within the
+root of the plugin directory.</p></li>
+<li><p><strong>galaxy.api.errors.BackendError</strong> – This exception is raised for a variety of failures regarding reading and
+creating the <code class="docutils literal notranslate"><span class="pre">config.cfg</span></code> file and reading the <code class="docutils literal notranslate"><span class="pre">default_config.cfg</span></code> file. The underlying exception is
+contained within an entry written to the plugin’s log file. Please report any occurrences of this error on the
+module repository on GitHub.</p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the valid options for later use here.</span>
+<span class="n">CONFIG_OPTIONS</span> <span class="o">=</span> <span class="n">get_config_options</span><span class="p">([</span>
+    <span class="n">Option</span><span class="p">(</span><span class="n">option_name</span><span class="o">=</span><span class="s2">&quot;log_sensitive_data&quot;</span><span class="p">),</span>
+    <span class="n">Option</span><span class="p">(</span><span class="n">option_name</span><span class="o">=</span><span class="s2">&quot;user_presence_mode&quot;</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">allowed_values</span><span class="o">=</span><span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)])</span>
+<span class="p">])</span>
+
+<span class="c1"># After get_config_options() has been called, the user&#39;s configuration options can be used.</span>
+<span class="n">LOG_SENSITIVE_DATA</span> <span class="o">=</span> <span class="n">CONFIG_OPTIONS</span><span class="p">[</span><span class="s1">&#39;log_sensitive_data&#39;</span><span class="p">]</span>  <span class="c1"># This will be False, unless</span>
+                                                           <span class="c1"># log_sensitive_data=True is in config.cfg.</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="exception">
+<dt id="galaxyutils.config_parser.InvalidConfigOptionException">
+<em class="property">exception </em><code class="sig-prename descclassname">galaxyutils.config_parser.</code><code class="sig-name descname">InvalidConfigOptionException</code><a class="headerlink" href="#galaxyutils.config_parser.InvalidConfigOptionException" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="time_tracker.html" class="btn btn-neutral float-right" title="time_tracker" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="galaxyutils / Universal Galaxy 2.0 Integration Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Tyler Nichols
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

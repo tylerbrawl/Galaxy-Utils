@@ -1,0 +1,473 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>time_tracker &mdash; galaxyutils v0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="config_parser" href="config_parser.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> galaxyutils
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="config_parser.html">config_parser</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">time_tracker</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-galaxyutils.time_tracker">Documentation</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">galaxyutils</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>time_tracker</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/time_tracker.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="time-tracker">
+<h1>time_tracker<a class="headerlink" href="#time-tracker" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This particular file allows for the creation of a <code class="docutils literal notranslate"><span class="pre">TimeTracker</span></code> object, which contains methods that allow an
+integration developer to keep track of the user’s play time for games in their library.</p>
+<p><strong>It is the developer’s responsibility to do the following:</strong></p>
+<ul class="simple">
+<li><p>Store the user’s play time cache for another session. A good implementation for doing so is to both save the play time
+cache to the <code class="docutils literal notranslate"><span class="pre">persistent_cache</span></code> and to write it locally to a file on the user’s disk. This ensures that the user’s
+play time is safe if the <code class="docutils literal notranslate"><span class="pre">persistent_cache</span></code> is erased (i.e., the user loses authentication). An example is shown
+below.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_time_cache</span><span class="p">:</span>  <span class="c1"># Do not overwrite the file if the cache is empty. This prevents accidentally erasing</span>
+                              <span class="c1"># the user&#39;s previous game time cache and resetting their play time.</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;PlayTimeCache.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span>
+        <span class="c1"># Consider informing the user to not modify the game time cache file.</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;# DO NOT EDIT THIS FILE</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">game_time_tracker</span><span class="o">.</span><span class="n">get_time_cache_hex</span><span class="p">())</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">game_times_import_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">game_time_cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_time_tracker</span><span class="o">.</span><span class="n">get_time_cache</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">persistent_cache</span><span class="p">[</span><span class="s2">&quot;game_time_cache&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_time_tracker</span><span class="o">.</span><span class="n">get_time_cache_hex</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">push_cache</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Retrieve the user’s play time cache from the previous session. Supposing that the cache was saved according to the
+previous example, a good implementation would be to retrieve it from the <code class="docutils literal notranslate"><span class="pre">persistent_cache</span></code> if possible, and then
+fall back to the locally stored file if it cannot be found there. In general, it is best to use a locally
+stored file to retrieve the game time cache only if all other methods fail. An example is shown below.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">handshake_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># Check the persistent cache first.</span>
+    <span class="k">if</span> <span class="s2">&quot;game_time_cache&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">persistent_cache</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_time_cache</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">persistent_cache</span><span class="p">[</span><span class="s2">&quot;game_time_cache&quot;</span><span class="p">]))</span>
+    <span class="c1"># If the game time cache cannot be found in the persistent cache, then check a local file for it.</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;PlayTimeCache.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">line</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;#&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">game_time_cache</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+                    <span class="k">break</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="c1"># If the file does not exist, then use an empty game time cache.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">game_time_tracker</span> <span class="o">=</span> <span class="n">TimeTracker</span><span class="p">()</span>
+            <span class="k">return</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">game_time_tracker</span> <span class="o">=</span> <span class="n">TimeTracker</span><span class="p">(</span><span class="n">game_time_cache</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">game_time_cache</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="module-galaxyutils.time_tracker">
+<span id="documentation"></span><h2>Documentation<a class="headerlink" href="#module-galaxyutils.time_tracker" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="galaxyutils.time_tracker.TimeTracker">
+<em class="property">class </em><code class="sig-prename descclassname">galaxyutils.time_tracker.</code><code class="sig-name descname">TimeTracker</code><span class="sig-paren">(</span><em class="sig-param">game_time_cache=None</em><span class="sig-paren">)</span><a class="headerlink" href="#galaxyutils.time_tracker.TimeTracker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new <code class="docutils literal notranslate"><span class="pre">TimeTracker</span></code> object to begin tracking time. The parameter upon creation accepts a former cache
+generated by a previous run of this module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>game_time_cache</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]]) – The dictionary returned by this module from a previous session. This should be the actual
+dictionary itself, rather than a hex representation of it.</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">handshake_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s2">&quot;game_time_cache&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">persistent_cache</span><span class="p">:</span>  <span class="c1"># This assumes that the game time cache is stored in the</span>
+                                                    <span class="c1"># persistent cache.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_time_cache</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">persistent_cache</span><span class="p">[</span><span class="s2">&quot;game_time_cache&quot;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_time_tracker</span> <span class="o">=</span> <span class="n">TimeTracker</span><span class="p">(</span><span class="n">game_time_cache</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">game_time_cache</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="method">
+<dt id="galaxyutils.time_tracker.TimeTracker.start_tracking_game">
+<code class="sig-name descname">start_tracking_game</code><span class="sig-paren">(</span><em class="sig-param">game_id</em>, <em class="sig-param">start_time=None</em><span class="sig-paren">)</span><a class="headerlink" href="#galaxyutils.time_tracker.TimeTracker.start_tracking_game" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify the module to begin keeping track of the user’s played time for the specified game. If this is the first
+time that the played time has ever been tracked for this game, then a new entry is created in the game time
+cache and the played time is set to 0. The last played time for the game is always updated to the time when
+either the method was called or, if specified, to the value set by the <code class="docutils literal notranslate"><span class="pre">start_time</span></code> parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>game_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The ID of the game to begin tracking play time for.</p></li>
+<li><p><strong>start_time</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – A specified time from which to begin counting. This parameter can be used to deal with
+troublesome timeouts.</p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">launch_game</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">game_id</span><span class="p">):</span>
+    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_local_client</span><span class="o">.</span><span class="n">launch_game</span><span class="p">(</span><span class="n">game_id</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">game_time_tracker</span><span class="o">.</span><span class="n">start_tracking_game</span><span class="p">(</span><span class="n">game_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxyutils.time_tracker.TimeTracker.stop_tracking_game">
+<code class="sig-name descname">stop_tracking_game</code><span class="sig-paren">(</span><em class="sig-param">game_id</em><span class="sig-paren">)</span><a class="headerlink" href="#galaxyutils.time_tracker.TimeTracker.stop_tracking_game" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify the module to finish keeping track of the user’s played time for the specified game. The already tracked
+total play time and last played time will be retained. Both the total play time and the last played time are
+updated and saved immediately before the game time tracking stops.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>game_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The ID of the game to cease tracking play time for.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#galaxyutils.time_tracker.GameNotTrackedException" title="galaxyutils.time_tracker.GameNotTrackedException"><strong>GameNotTrackedException</strong></a> – This exception is thrown if the specified game_id is not currently being
+tracked.</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">check_game_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">game_id</span><span class="p">):</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">LocalGameState</span><span class="o">.</span><span class="n">None_</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_local_client</span><span class="o">.</span><span class="n">get_path_to_game</span><span class="p">(</span><span class="n">game_id</span><span class="p">):</span>
+        <span class="n">state</span> <span class="o">|=</span> <span class="n">LocalGameState</span><span class="o">.</span><span class="n">Installed</span>
+
+    <span class="k">if</span> <span class="n">game_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_games_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_local_client</span><span class="o">.</span><span class="n">check_if_process_exists</span><span class="p">(</span><span class="n">game_id</span><span class="p">):</span>
+            <span class="n">state</span> <span class="o">|=</span> <span class="n">LocalGameState</span><span class="o">.</span><span class="n">Running</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_games_list</span><span class="p">[</span><span class="n">game_id</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">game_time_tracker</span><span class="o">.</span><span class="n">stop_tracking_game</span><span class="p">(</span><span class="n">game_id</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">LocalGame</span><span class="p">(</span><span class="n">game_id</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxyutils.time_tracker.TimeTracker.get_tracked_time">
+<code class="sig-name descname">get_tracked_time</code><span class="sig-paren">(</span><em class="sig-param">game_id</em><span class="sig-paren">)</span><a class="headerlink" href="#galaxyutils.time_tracker.TimeTracker.get_tracked_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <code class="docutils literal notranslate"><span class="pre">GameTime</span></code> object for the specified game. This object contains the latest total time played and last
+time played values for the game.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>game_id</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – The ID of the game to create a <code class="docutils literal notranslate"><span class="pre">GameTime</span></code> object for.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#galaxyutils.time_tracker.GameNotTrackedException" title="galaxyutils.time_tracker.GameNotTrackedException"><strong>GameNotTrackedException</strong></a> – This exception is thrown if the specified <code class="docutils literal notranslate"><span class="pre">game_id</span></code> has no game time data
+in the game time cache (i.e., it has not been tracked at least once).</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">get_game_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">game_id</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_time_tracker</span><span class="o">.</span><span class="n">get_tracked_time</span><span class="p">(</span><span class="n">game_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">GameTime</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxyutils.time_tracker.TimeTracker.get_time_cache">
+<code class="sig-name descname">get_time_cache</code><span class="sig-paren">(</span><em class="sig-param">ignore_tracking=False</em><span class="sig-paren">)</span><a class="headerlink" href="#galaxyutils.time_tracker.TimeTracker.get_time_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current game time cache as a dictionary. Each key in this dictionary is a <code class="docutils literal notranslate"><span class="pre">game_id</span></code> which has been
+tracked at least once, and each key’s value is another dictionary. Here is an example of a returned dictionary
+(make note of the keys contained within the nested dictionary, as these are used to access relevant
+information):</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">game_time_cache</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;game_id&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;time_played&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>  <span class="c1"># This is the total minutes played for the game (60 in this case).</span>
+        <span class="s2">&quot;last_played&quot;</span><span class="p">:</span> <span class="mi">1574865787</span>  <span class="c1"># This is the epoch time (in seconds) that the game was last played.</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ignore_tracking</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]) – If set to true, a GamesStillBeingTrackedException will not be thrown when it normally
+would be.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#galaxyutils.time_tracker.GamesStillBeingTrackedException" title="galaxyutils.time_tracker.GamesStillBeingTrackedException"><strong>GamesStillBeingTrackedException</strong></a> – This exception is thrown if there is at least one game which is still
+being tracked.</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_game_time_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_time_cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_time_tracker</span><span class="o">.</span><span class="n">get_time_cache</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">GamesStillBeingTrackedException</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">game_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_games_list</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">game_time_tracker</span><span class="o">.</span><span class="n">stop_tracking_game</span><span class="p">(</span><span class="n">game_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_time_cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_time_tracker</span><span class="o">.</span><span class="n">get_time_cache</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxyutils.time_tracker.TimeTracker.get_time_cache_hex">
+<code class="sig-name descname">get_time_cache_hex</code><span class="sig-paren">(</span><em class="sig-param">ignore_tracking=False</em><span class="sig-paren">)</span><a class="headerlink" href="#galaxyutils.time_tracker.TimeTracker.get_time_cache_hex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current game time cache in hex form as a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ignore_tracking</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]) – If set to true, a GamesStillBeingTrackedException will not be thrown when it normally
+would be.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#galaxyutils.time_tracker.GamesStillBeingTrackedException" title="galaxyutils.time_tracker.GamesStillBeingTrackedException"><strong>GamesStillBeingTrackedException</strong></a> – This exception is thrown if there is at least one game which is still
+being tracked.</p>
+</dd>
+</dl>
+<dl>
+<dt>Example:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_time_cache</span><span class="p">:</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;PlayTimeCache.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">game_time_tracker</span><span class="o">.</span><span class="n">get_time_cache_hex</span><span class="p">()))</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="galaxyutils.time_tracker.GameNotTrackedException">
+<em class="property">exception </em><code class="sig-prename descclassname">galaxyutils.time_tracker.</code><code class="sig-name descname">GameNotTrackedException</code><a class="headerlink" href="#galaxyutils.time_tracker.GameNotTrackedException" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="galaxyutils.time_tracker.GamesStillBeingTrackedException">
+<em class="property">exception </em><code class="sig-prename descclassname">galaxyutils.time_tracker.</code><code class="sig-name descname">GamesStillBeingTrackedException</code><a class="headerlink" href="#galaxyutils.time_tracker.GamesStillBeingTrackedException" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="config_parser.html" class="btn btn-neutral float-left" title="config_parser" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Tyler Nichols
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
