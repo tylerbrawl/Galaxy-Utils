@@ -12,7 +12,7 @@
 #
 import os
 import sys
-sys.path.append(os.path.abspath('src'))
+sys.path.insert(0, os.path.join(os.path.abspath('..'), 'src'))
 
 
 # -- Project information -----------------------------------------------------
@@ -22,7 +22,7 @@ copyright = '2019, Tyler Nichols'
 author = 'Tyler Nichols'
 
 # The full version, including alpha/beta/rc tags
-release = '11/26/2019'
+release = 'v0.1'
 
 
 # -- General configuration ---------------------------------------------------
@@ -31,7 +31,14 @@ release = '11/26/2019'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx_autodoc_typehints',
+    'sphinx_rtd_theme'
 ]
+
+autodoc_member_order = 'bysource'
+autodoc_inherit_docstrings = False
+autodoc_mock_imports = ['galaxy']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -47,7 +54,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
