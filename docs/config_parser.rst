@@ -1,9 +1,12 @@
 config_parser
 =============
 
+Overview
+--------
+
 Documentation
 -------------
 
-.. automodule:: src.config.config_parser
+.. automodule:: galaxyutils.config_parser
     :members:
     :undoc-members:
