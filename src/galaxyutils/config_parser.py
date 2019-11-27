@@ -8,6 +8,10 @@ import os
 
 @dataclass
 class Option(object):
+    """
+    Create a new ``Option`` object to define a customizable option. The ``option_name`` value must be the same value as
+    is provided within the plugin's ``default_config.cfg`` file.
+    """
     option_name: str
     allowed_values: Optional[List[Any]] = field(default_factory=lambda: [True, False])
     default_value: Any = False
@@ -96,13 +100,16 @@ def _parse_config(config) -> Dict[str, Any]:
     for line in config:
         if line[:1] == "#" or line in ['\r\n', '\n']:
             continue
-        option = line.strip().split("=")
+        option = line.split("=")
+        option[0] = option[0].strip()  # Remove possible spaces before/after the option name.
+        option[1] = option[1].strip()  # Remove possible spaces before/after the option value.
         if option[0] in options_dict:
-            if str(option[1]) in [str(o) for o in options_dict[option[0]]['allowed']] and str(option[1]) != \
-                    str(options_dict[option[0]]['default']):
-                return_dict[option[0]] = option[1]
-                log.debug(f"GALAXY_CONFIG_OPTION: The option {option[0]} is now set to {option[1]} instead of "
-                          f"{options_dict[option[0]]['default']}.")
+            for o in options_dict[option[0]]['allowed']:
+                if str(option[1]) == str(o) and str(option[1]) != str(options_dict[option[0]]['default']):
+                    return_dict[option[0]] = o
+                    log.debug(f"GALAXY_CONFIG_OPTION: The option {option[0]} is now set to {str(o)} instead of "
+                              f"{options_dict[option[0]]['default']}.")
+                    break
         else:
             log.debug(f"GALAXY_FAKE_CONFIG_OPTION: The option {option[0]} is not a defined option!")
     config.close()
