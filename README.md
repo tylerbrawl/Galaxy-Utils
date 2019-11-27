@@ -14,4 +14,4 @@ Currently, the features of this module include the following:
 * Configuration File Support - Create and utilize a customized config.cfg file, which can contain settings that users and developers can alter to affect how a plugin functions.
 
 ## Documentation:
-For the complete documentation of this module, visit [docs].
+For the complete documentation of this module, visit https://galaxy-utils.readthedocs.io/en/latest/.
