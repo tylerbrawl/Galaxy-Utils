@@ -4,7 +4,7 @@ This repository contains some utilities that Galaxy 2.0 plugin developers may fi
 ## Installation:
 To install this module, use the Python Package Installer (pip) as shown:
 ```sh
-pip install galaxy-utils
+pip install galaxyutils
 ```
 From there, the module can be safely imported into a plugin's root directory.
 
