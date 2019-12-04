@@ -59,6 +59,7 @@ class TimeTracker:
         if not start_time:
             start_time = time()
         if game_id not in self._game_time_cache:
+            self._game_time_cache[game_id] = dict()
             self._game_time_cache[game_id]['time_played'] = 0
         self._game_time_cache[game_id]['last_played'] = start_time
         self._running_games_dict[game_id] = (_RunningGameInfo(game_id=game_id, start_time=(time() if not start_time else

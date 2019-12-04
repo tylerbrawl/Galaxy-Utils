@@ -22,7 +22,7 @@ copyright = '2019, Tyler Nichols'
 author = 'Tyler Nichols'
 
 # The full version, including alpha/beta/rc tags
-release = 'v0.1'
+release = 'v0.1.2'
 
 
 # -- General configuration ---------------------------------------------------
