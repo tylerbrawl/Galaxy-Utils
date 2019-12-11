@@ -95,8 +95,6 @@ class TimeTracker:
 
         """
         self._update_tracked_time(game_id)
-        if game_id not in self._running_games_dict:
-            raise GameNotTrackedException
         del self._running_games_dict[game_id]
 
     def _update_tracked_time(self, game_id: str) -> None:
@@ -126,7 +124,10 @@ class TimeTracker:
         """
         if game_id not in self._game_time_cache:
             raise GameNotTrackedException
-        self._update_tracked_time(game_id)
+        # The tracked time should only be updated if the game is running; otherwise, a GameNotTrackedException is
+        # erroneously thrown.
+        if game_id in self._running_games_dict:
+            self._update_tracked_time(game_id)
         time_played = self._game_time_cache[game_id]['time_played']
         current_time = self._game_time_cache[game_id]['last_played']
         return GameTime(game_id, time_played=int(time_played), last_played_time=int(current_time))
