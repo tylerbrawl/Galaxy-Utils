@@ -37,9 +37,9 @@ class Option(object):
 
 CONFIG_OPTIONS = []
 
-CONFIG_PATH = os.path.join(os.path.abspath(__file__), '..', '..', 'config.cfg')
+CONFIG_PATH = os.path.abspath(os.path.join(os.path.abspath(__file__), '..', '..', 'config.cfg'))
 
-DEFAULT_CONFIG_PATH = os.path.join(os.path.abspath(__file__), '..', '..', 'default_config.cfg')
+DEFAULT_CONFIG_PATH = os.path.abspath(os.path.join(os.path.abspath(__file__), '..', '..', 'default_config.cfg'))
 
 
 def get_config_options(options: List[Option]) -> Dict[str, Any]:
