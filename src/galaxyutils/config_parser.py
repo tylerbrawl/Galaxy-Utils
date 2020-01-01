@@ -160,7 +160,8 @@ def _parse_config(config) -> Dict[str, Any]:
         if option[0] in options_dict:
             if options_dict[option[0]]['str_option'] and option[1] != "None":
                 return_dict[option[0]] = option[1]
-                log.debug(f"GALAXY_CONFIG_OPTION: The option {option[0]} is now set to {option[1]}.")
+                if option[1] != "":
+                    log.debug(f"GALAXY_CONFIG_OPTION: The option {option[0]} is now set to {option[1]}.")
             else:
                 for o in options_dict[option[0]]['allowed']:
                     if str(option[1]).lower() == str(o).lower() and str(option[1]) != \
